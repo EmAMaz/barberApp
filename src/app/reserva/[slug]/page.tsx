@@ -1,4 +1,3 @@
-// app/reserva/[slug]/page.tsx
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
 import BookingUI from './BookingUI';
@@ -24,18 +23,11 @@ export default async function ReservaPage({ params }: { params: Promise<{ slug: 
 
   // 2. Traemos los turnos de hoy
   const hoy = new Date().toISOString().split('T')[0];
-  const { data: turnos } = await supabase
-    .from('turnos')
-    .select('id, hora, esta_disponible')
-    .eq('barbero_id', barbero.id)
-    .eq('fecha', hoy)
-    .order('hora', { ascending: true });
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <BookingUI 
         barbero={barbero} 
-        turnosIniciales={turnos || []} 
       />
     </div>
   );

@@ -1,4 +1,3 @@
-// app/reserva/[slug]/BookingUI.tsx
 "use client";
 
 import { useState } from 'react';
@@ -32,7 +31,7 @@ function SkeletonLoader() {
   );
 }
 
-export default function BookingUI({ barbero, turnosIniciales }: any) {
+export default function BookingUI({ barbero }: any) {
   const [selectedTurno, setSelectedTurno] = useState<any>(null);
   const [nombre, setNombre] = useState("");
   const [loading, setLoading] = useState(false);
