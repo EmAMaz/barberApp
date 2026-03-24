@@ -21,9 +21,6 @@ export default async function ReservaPage({ params }: { params: Promise<{ slug: 
     return notFound(); // Esto muestra la página 404 por defecto de Next.js
   }
 
-  // 2. Traemos los turnos de hoy
-  const hoy = new Date().toISOString().split('T')[0];
-
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <BookingUI 

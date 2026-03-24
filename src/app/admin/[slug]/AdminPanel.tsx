@@ -14,7 +14,7 @@ const supabase = createClient(
 );
 
 const fetcher = async (barberoId: string) => {
-  const hoy = new Date().toISOString().split("T")[0];
+  const hoy = new Date().toLocaleDateString('sv-SE');
   const { data } = await supabase
     .from("turnos")
     .select("*")
@@ -58,7 +58,7 @@ export default function AdminPanel({ barberoId }: AdminPanelProps) {
   setLoading(true);
 
   try {
-    const hoy = new Date().toISOString().split("T")[0];
+    const hoy = new Date().toLocaleDateString('sv-SE');
     const nuevosTurnosRaw = [];
 
     const [hInicio, mInicio] = config.inicio.split(":").map(Number);
