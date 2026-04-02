@@ -1,4 +1,5 @@
 import { SignIn } from "@/components/auth-components";
+import { FooterHome } from "@/components/footer-components";
 import { Scissors } from "@deemlol/next-icons";
 
 export default function Home() {
@@ -9,10 +10,11 @@ export default function Home() {
           <div className="w-16 h-16 bg-black dark:bg-white rounded-[1.5rem] flex items-center justify-center shadow-2xl rotate-3">
             <Scissors className="text-white dark:text-black" size={32} />
           </div>
-          
+
           <div className="space-y-1">
             <h1 className="text-4xl font-black tracking-tighter text-zinc-900 dark:text-zinc-50">
-              BarberTurnos<span className="text-zinc-400 font-light text-3xl">Pro</span>
+              BarberTurnos
+              <span className="text-zinc-400 font-light text-3xl">Pro</span>
             </h1>
             <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 font-bold">
               Premium Management System
@@ -38,12 +40,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Footer Minimalista */}
-        <div className="flex items-center justify-center gap-2 text-zinc-400 dark:text-zinc-600">
-          <span className="text-xs font-medium">BarberFlow Argentina</span>
-          <div className="w-1 h-1 bg-zinc-300 dark:bg-zinc-800 rounded-full"></div>
-          <span className="text-xs font-medium">v2.0</span>
-        </div>
+        <FooterHome />
       </div>
     </div>
   );
