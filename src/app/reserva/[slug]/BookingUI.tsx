@@ -133,7 +133,7 @@ export default function BookingUI({ barbero }: any) {
             </div>
 
             {/* AVISO DE SEÑA - Diseño Atractivo */}
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 p-4 rounded-2xl flex items-center gap-4">
+            <div className="bg-linear-to-r from-green-50 to-emerald-50 border border-green-100 p-4 rounded-2xl flex items-center gap-4">
               <div className="bg-white p-2 rounded-xl shadow-sm text-2xl">
                 💳
               </div>
