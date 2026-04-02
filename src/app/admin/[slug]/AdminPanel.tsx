@@ -251,12 +251,6 @@ export default function AdminPanel({ barberoId }: AdminPanelProps) {
           </div>
         )}
       </div>
-
-      <footer className="text-center pt-4">
-        <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase">
-          MicroSaaS Barber v1.0
-        </p>
-      </footer>
     </div>
   );
 }
