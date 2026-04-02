@@ -30,6 +30,13 @@ export default function Home() {
             </p>
           </div>
 
+          <div className="space-y-3">
+            <SignIn />
+            <p className="text-[11px] text-zinc-400 px-4 leading-relaxed">
+              Al iniciar sesión, confirmas que eres un barbero autorizado de la plataforma.
+            </p>
+          </div>
+        </div>
 
         {/* Footer Minimalista */}
         <div className="flex items-center justify-center gap-2 text-zinc-400 dark:text-zinc-600">
