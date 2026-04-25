@@ -1,31 +1,32 @@
-import { createClient } from '@supabase/supabase-js';
-import { notFound } from 'next/navigation';
-import BookingUI from './BookingUI';
+"use client";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import BookingUI from "./BookingUI";
+import AgendaCerradaUI from "@/components/AgendaCerrada";
+import BookingFlow from "@/components/BookingFlow";
+import { useGetAgenda } from "@/hooks/useGetAgenda";
+import { useParams } from "next/navigation";
 
-export default async function ReservaPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default function ReservaPage() {
+  const params = useParams();
+  const { agenda } = useGetAgenda();
 
-  // 1. Buscamos al barbero por su slug (URL)
-  const { data: barbero } = await supabase
-    .from('barberos')
-    .select('*')
-    .eq('slug', slug)
-    .single();
-
-  if (!barbero) {
-    return notFound(); // Esto muestra la página 404 por defecto de Next.js
-  }
-
+  console.log(agenda);
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <BookingUI 
-        barbero={barbero} 
-      />
+    <div>
+      {!agenda && params.slug ? (
+        <AgendaCerradaUI perfilNombre={params.slug} />
+      ) : (
+        //<BookingFlow agendaId={agenda.id} />
+        <BookingUI agendaId={agenda.id} />
+      )}
     </div>
   );
+
+  // return (
+  //   <div className="flex justify-center items-center min-h-screen bg-gray-50">
+  //     <BookingUI
+  //       barbero={barbero}
+  //     />
+  //   </div>
+  // );
 }

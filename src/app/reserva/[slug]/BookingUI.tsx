@@ -4,12 +4,15 @@ import { useMemo, useState } from "react";
 import CheckoutButton from "@/components/WalletMp";
 import { useTurnos } from "@/hooks/useTurnos";
 import SkeletonLoader from "@/utils/SkeletonLoader";
+import { useParams } from "next/navigation";
+import AgendaCerradaUI from "@/components/AgendaCerrada";
 
-export default function BookingUI({ barbero }: any) {
+export default function BookingUI({ agendaId }: any) {
   const [selectedTurno, setSelectedTurno] = useState<any>(null);
   const [nombre, setNombre] = useState("");
   const [loading, setLoading] = useState(false);
-  const { turnos, mutate, isLoading, supabase } = useTurnos(barbero.id);
+  const { turnos, mutate, isLoading, supabase } = useTurnos(agendaId);
+  const params = useParams();
 
   const handleConfirmar = async () => {
     if (!selectedTurno || !nombre) return alert("Escribe tu nombre");
@@ -37,7 +40,7 @@ export default function BookingUI({ barbero }: any) {
       if (!error) {
         mutate();
         const texto = `Hola! Soy ${nombre}, reservé a las ${selectedTurno.hora.slice(0, 5)}hs.`;
-        window.location.href = `https://wa.me/${barbero.telefono_whatsapp}?text=${encodeURIComponent(texto)}`;
+        //window.location.href = `https://wa.me/${barbero.telefono_whatsapp}?text=${encodeURIComponent(texto)}`;
       }
     } catch (err) {
       console.error(err);
@@ -70,16 +73,17 @@ export default function BookingUI({ barbero }: any) {
     ));
   }, [turnos, selectedTurno?.id]);
 
+  if (!isLoading && !turnos?.length && params.slug) return <AgendaCerradaUI perfilNombre={params.slug} />;
+
   return (
     <div className="max-w-md mx-auto min-h-screen bg-white p-6 pb-24">
-      {/* CABECERA ESTILO PREMIUM */}
       <header className="text-center mb-10">
-        <div className="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-black shadow-xl">
+        {/* <div className="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-black shadow-xl">
           {barbero.nombre_negocio.charAt(0)}
         </div>
         <h1 className="text-2xl font-black uppercase tracking-tighter text-gray-900">
           {barbero.nombre_negocio}
-        </h1>
+        </h1> */}
         <div className="flex justify-center items-center gap-2 mt-2">
           <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
@@ -87,7 +91,6 @@ export default function BookingUI({ barbero }: any) {
           </p>
         </div>
       </header>
-
       {/* CUERPO: SKELETON O TURNOS */}
       <section>
         {isLoading ? (
@@ -96,15 +99,7 @@ export default function BookingUI({ barbero }: any) {
           <div className="grid grid-cols-3 gap-3">{listaTurnos}</div>
         )}
       </section>
-      <section>
-        {!isLoading && !turnos?.length && (
-          <p className="mt-4 text-center text-gray-500">
-            Ups...
-            <br />
-            No hay turnos disponibles
-          </p>
-        )}
-      </section>
+      <section></section>
 
       {/* FOOTER FLOTANTE PARA CONFIRMACIÓN */}
       {selectedTurno && (
@@ -143,7 +138,7 @@ export default function BookingUI({ barbero }: any) {
                 </p>
                 <p className="text-[11px] text-green-700 leading-tight">
                   Para congelar tu turno debes abonar una seña de{" "}
-                  <span className="font-bold">$2.000</span> mediante Mercado
+                  <span className="font-bold">${Number(process.env.NEXT_PUBLIC_BOOKING_FEE)}</span> mediante Mercado
                   Pago.
                 </p>
               </div>
@@ -178,7 +173,10 @@ export default function BookingUI({ barbero }: any) {
               ) : (
                 /* AQUÍ VA TU COMPONENTE CON LA LÓGICA DE MERCADO PAGO */
                 <div className="animate-in fade-in zoom-in-95 duration-300">
-                  <CheckoutButton turnoId={selectedTurno.id} nombre={nombre} precio={100} />
+                  <CheckoutButton
+                    turnoId={selectedTurno.id}
+                    nombre={nombre}
+                  />
                 </div>
               )}
             </div>

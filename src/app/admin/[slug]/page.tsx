@@ -1,9 +1,10 @@
-// app/admin/[slug]/page.tsx
 import { createClient } from "@supabase/supabase-js";
 import { notFound, redirect } from "next/navigation";
 import AdminPanel from "./AdminPanel";
 import { auth, signOut } from "@/auth";
 import { FooterAdmin } from "@/components/footer-components";
+import AgendaUI from "@/components/AgendaUI";
+import { useAgenda } from "@/hooks/useAgenda";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,17 +18,25 @@ export default async function AdminPage({
 }) {
   const { slug } = await params;
   const session = await auth();
-
+  const hoy = new Date().toLocaleDateString('sv-SE');
   if (!session) {
     return redirect("/");
   }
-  const { data: barbero } = await supabase
-    .from("barberos")
+  const { data: perfiles_negocio } = await supabase
+    .from("perfiles_negocio")
     .select("*")
     .eq("slug", slug)
     .single();
 
-  if (!barbero) return notFound();
+  const { data: agendas } = await supabase
+    .from("agendas")
+    .select("*")
+    .eq("fecha_inicio", hoy)
+    .eq("perfil_id", perfiles_negocio.id)
+    .single();
+
+    console.log(perfiles_negocio)
+  if (!perfiles_negocio) return notFound();
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4 font-sans">
@@ -39,8 +48,8 @@ export default async function AdminPage({
               <p className="text-xs uppercase tracking-widest opacity-60 mb-1">
                 Admin Panel
               </p>
-              <h1 className="text-2xl font-bold tracking-tight">
-                {barbero.nombre_negocio}
+              <h1 className="text-2xl font-bold tracking-tight uppercase">
+                {perfiles_negocio.display_name}
               </h1>
             </div>
 
@@ -67,15 +76,13 @@ export default async function AdminPage({
         <div className="p-6 space-y-6">
           <section>
             <h3 className="text-sm font-bold text-gray-400 uppercase mb-4 tracking-wider">
-              Gestión de Turnos
+              Panel de acciones
             </h3>
-            <AdminPanel barberoId={barbero.id} />
+            <AdminPanel perfilId={perfiles_negocio.id} />
           </section>
-
           <hr className="border-gray-100" />
-
-          {/* Sección de Configuración Crítica */}
-          <section className="bg-red-50/50 rounded-2xl p-5 border border-red-100">
+          {/* Sección de Configuración Crítica */} {/* DESACTIVADA POR AHORA */}
+          {/* <section className="bg-red-50/50 rounded-2xl p-5 border border-red-100">
             <div className="flex items-center gap-2 text-red-600 mb-3">
               <h3 className="font-bold text-sm uppercase tracking-wider">
                 Configuración Avanzada
@@ -99,7 +106,7 @@ export default async function AdminPage({
                 Reiniciar Todos los Turnos
               </button>
             </form>
-          </section>
+          </section> */}
         </div>
 
         <FooterAdmin />

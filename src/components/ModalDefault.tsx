@@ -1,5 +1,6 @@
 "use client";
 
+import { CheckCircle } from "@deemlol/next-icons";
 import { Button, Modal } from "@heroui/react";
 
 export function ModalDefault({ ...props }: any) {
@@ -8,7 +9,9 @@ export function ModalDefault({ ...props }: any) {
         <Modal.Container>
           <Modal.Dialog className="sm:max-w-90">
             <Modal.Header>
-              <Modal.Icon className="bg-success-soft text-success-soft-foreground"></Modal.Icon>
+              <Modal.Icon className="bg-success text-success-soft-foreground">
+                <CheckCircle size={128} color="#FFFFFF" strokeWidth={1.5} />
+              </Modal.Icon>
               <Modal.Heading>Publicar agenda</Modal.Heading>
             </Modal.Header>
             <Modal.Body>

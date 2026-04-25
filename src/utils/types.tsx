@@ -1,3 +1,3 @@
 export interface AdminPanelProps {
-  barberoId: string;
+  perfilId: string;
 }

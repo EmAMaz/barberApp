@@ -8,13 +8,11 @@ initMercadoPago(process.env.NEXT_PUBLIC_MP_KEY!);
 interface CheckoutButtonProps {
   turnoId: string;
   nombre: string;
-  precio: number;
 }
 
 export default function CheckoutButton({
   turnoId,
   nombre,
-  precio,
 }: CheckoutButtonProps) {
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +26,7 @@ export default function CheckoutButton({
         body: JSON.stringify({
           turnoId,
           nombre,
-          precio,
+          precio: process.env.NEXT_PUBLIC_BOOKING_FEE,
         }),
       });
 
